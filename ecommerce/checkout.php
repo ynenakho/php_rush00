@@ -16,10 +16,18 @@ $conn = mysqli_connect(
 );
 if (!$conn)
 	die("Connection failed: " . mysqli_connect_error());
-$sql = "DELETE FROM cart WHERE login=?";
-$stm = mysqli_prepare($conn, $sql);
-mysqli_stmt_bind_param($stm, "s", $_SESSION['who']);
-mysqli_stmt_execute($stm);
+if (isset($_SESSION['who']))
+{
+	$tmp = 'tmpuser';
+	$sql = "DELETE FROM cart WHERE login=?";
+	$stm = mysqli_prepare($conn, $sql);
+	mysqli_stmt_bind_param($stm, "s", $_SESSION['who']);
+	mysqli_stmt_execute($stm);
+	$sql = "DELETE FROM cart WHERE login=?";
+	$stm = mysqli_prepare($conn, $sql);
+	mysqli_stmt_bind_param($stm, "s", $tmp);
+	mysqli_stmt_execute($stm);
+}
 ?>
 
 <!DOCTYPE html>
